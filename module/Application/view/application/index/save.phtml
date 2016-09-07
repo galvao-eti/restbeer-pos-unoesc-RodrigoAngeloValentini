@@ -1,0 +1,31 @@
+<div class="row">
+    <?php
+
+    echo $this->form()->openTag($form)
+    ?>
+
+    <div class="col-xs-12 col-sm-4">
+        <?php echo $this->formLabel($form->get('name'))?>
+        <?php echo $this->formElement($form->get('name'))?>
+        <?php echo $this->formElementErrors($form->get('name', array('class' => 'help-block')))?>
+    </div>
+
+    <div class="col-xs-12 col-sm-4">
+        <?php echo $this->formLabel($form->get('style'))?>
+        <?php echo $this->formElement($form->get('style'))?>
+        <?php echo $this->formElementErrors($form->get('style', array('class' => 'help-block')))?>
+    </div>
+
+    <div class="col-xs-12 col-sm-4">
+        <?php echo $this->formLabel($form->get('img'))?>
+        <?php echo $this->formElement($form->get('img'))?>
+        <?php echo $this->formElementErrors($form->get('img', array('class' => 'help-block')))?>
+    </div>
+
+    <div class="col-xs-12 col-sm-4">
+        <br>
+        <?php echo $this->formElement($form->get('send'))?>
+    </div>
+
+    <?php echo $this->form()->closeTag()?>
+</div>

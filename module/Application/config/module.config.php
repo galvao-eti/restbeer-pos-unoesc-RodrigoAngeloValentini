@@ -6,40 +6,38 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
+namespace Application;
 
 return array(
     'router' => array(
         'routes' => array(
+
             'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/',
+                    'route'=>'/',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Index',
+                        'action' => 'index'
+                    ),
+                ),
+            ),
+            'beer' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/beer[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'create' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/create',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'create',
-                    ),
-                ),
-            ),
-            'insert' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/insert',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'insert',
-                    ),
-                ),
-            ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -80,20 +78,6 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
-        'invokables' => array(
-            'Application\Form\Beer' => 'Application\Form\Beer',
-        ),
-        'factories' => array(
-            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
-            'Application\Model\BeerTableGateway' =>  function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new Zend\Db\ResultSet\ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Application\Model\Beer());
-                    $tableGateway = new Zend\Db\TableGateway\TableGateway('beer', $dbAdapter, null, $resultSetPrototype);
-                    $beerTableGateway = new Application\Model\BeerTableGateway($tableGateway);
-                    return $beerTableGateway;
-                },
-            ),
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -109,6 +93,20 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController'
         ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -133,4 +131,5 @@ return array(
             ),
         ),
     ),
+
 );

@@ -17,6 +17,9 @@ class Beer extends Form
                 'label' => 'Beer name',
             ],
             'type'  => 'Text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
         ]);
         $this->add([
             'name' => 'style',
@@ -24,6 +27,9 @@ class Beer extends Form
                 'label' => 'Beer style',
             ],
             'type'  => 'Text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
         ]);
 
          $this->add([
@@ -32,6 +38,10 @@ class Beer extends Form
                 'label' => 'Beer image',
             ],
             'type'  => 'Text',
+             'attributes' => [
+                 'class' => 'form-control'
+             ],
+
         ]);
 
         $this->add([
@@ -39,10 +49,11 @@ class Beer extends Form
             'type'  => 'Submit',
             'attributes' => [
                 'value' => 'Submit',
+                'class' => 'btn btn-primary'
             ],
         ]);
 
-        $this->setAttribute('action', '/save');
+        $this->setAttribute('action', '/beer/save');
         $this->setAttribute('method', 'post');
     }
 
